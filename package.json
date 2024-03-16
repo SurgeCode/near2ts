@@ -1,0 +1,19 @@
+{
+  "name": "near2ts",
+  "version": "0.3.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "near2ts": "./src/index.js"
+  },
+  "bin": {
+    "near2ts": "./src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "json-schema-to-typescript": "^13.1.2",
+    "near-cli-rs": "^0.8.1"
+  }
+}
