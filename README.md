@@ -12,7 +12,7 @@ Also works as dev dependency
 
 ```
 
-npm i -dev near2ts
+npm i near2ts --save-dev
 
 ```
 package.json
