@@ -4,6 +4,11 @@ Effortlessly create TypeScript types for your NEAR smart contracts.
 
 Within the NEAR ecosystem, the ABI is depicted as a JSON schema outlining the contract's interface. Utilizing this library enables you to quickly generate TypeScript types by simply providing the contract name or the path to the ABI, streamlining your development process.
 
+| Note: This only works for contracts that have generated ABI's |
+| --- |
+
+[Generate an ABI by following these instructions](https://github.com/near/abi) or read below
+
 
 ## Example
 Generate the types for the devhub.near contract and add them to your root
@@ -79,10 +84,8 @@ npm run near2ts ./abi.json
 
 
 ## Generating ABI
-| Warning: This only works for contracts that have generated ABI's |
-| --- |
 
-Generate an ABI by following these instructions, for more info checkout [near/abi](https://github.com/near/abi/tree/main)
+(taken from https://github.com/near/abi)
 ### Rust
 Ensure you have cargo-near installed
 
@@ -107,6 +110,7 @@ $ npx near-sdk-js build --generateABI path/to/contract.ts
 
 The ABI will be put in build/contract-abi.json
 
-TODO
+### TODO
+- generate types in a way that are more compatible with near-api-js (whole function call object?)
 - dev dependency uses local version before node modules so if you have near cli js installed its using that one instead of rs, making it fail
 
