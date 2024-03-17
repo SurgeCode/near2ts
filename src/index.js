@@ -27,41 +27,43 @@ async function convertAbiToTypescript(abiFilePath) {
 }
 
 function convertToDesiredFormat(inputJson) {
-  const outputJson= {
+  const outputJson = {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {},
     "type": "object",
-    "properties": {},
-    "required": [],
+    "oneOf": [],
     "additionalProperties": false
   };
 
   const { body } = inputJson;
   const { functions, root_schema } = body;
 
-  functions.forEach((func) => {
-    const propName = func.name;
+  functions.forEach((func, index) => {
     const properties = {};
     const required = [];
 
     func.params?.args.forEach((arg) => {
       const { name, type_schema } = arg;
       properties[name] = convertTypeSchema(type_schema);
-      if (type_schema?.required !== false) { 
+      if (type_schema?.required !== false) {
         required.push(name);
       }
     });
 
-    outputJson.properties[propName] = {
+    outputJson.definitions[func.name] = {
       type: "object",
       properties,
       required,
       additionalProperties: false
     };
+
+    outputJson.oneOf.push({
+      "$ref": `#/definitions/${func.name}`
+    });
   });
 
   if (root_schema && root_schema.definitions) {
-    outputJson.definitions = { ...root_schema.definitions };
+    outputJson.definitions = { ...outputJson.definitions, ...root_schema.definitions };
   }
 
   return outputJson;
@@ -89,15 +91,16 @@ function convertTypeSchema(typeSchema) {
             acc[key] = convertTypeSchema(typeSchema.properties[key]);
             return acc;
           }, {});
-          return { "type": "object", "properties": properties };
+          return { "type": "object", "properties": properties, "additionalProperties": false };
         } else {
-          return { "type": "object" };
+          return { "type": "object", "additionalProperties": false };
         }
       default:
         return {};
     }
-  } 
+  }
 }
+
 
 
 async function main() {
